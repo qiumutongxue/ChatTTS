@@ -174,10 +174,10 @@ class Chat:
         
         return wav
     
-    def sample_random_speaker(self, ):
-        
-        dim = self.pretrain_models['gpt'].gpt.layers[0].mlp.gate_proj.in_features
-        std, mean = self.pretrain_models['spk_stat'].chunk(2)
+    def sample_random_speaker(self, seed):  #加了seed
+        torch.manual_seed(seed)
+        dim = self.pretrain_models["gpt"].gpt.layers[0].mlp.gate_proj.in_features
+        std, mean = self.pretrain_models["spk_stat"].chunk(2)
         return torch.randn(dim, device=std.device) * std + mean
     
     def init_normalizer(self, lang):
